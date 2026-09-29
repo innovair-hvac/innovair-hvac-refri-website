@@ -124,6 +124,11 @@ footer a{display:block;margin:7px 0}
   .real-projects{grid-template-columns:1fr;grid-template-rows:repeat(8,260px)}
 }
 
+
+.lang-toggle{display:flex;align-items:center;gap:4px;background:#eef5fa;border:1px solid #d9e6ef;border-radius:9px;padding:3px;margin-left:auto}
+.lang-btn{border:0;background:transparent;color:var(--navy);padding:8px 10px;border-radius:7px;font-weight:900;cursor:pointer;font-size:12px}
+.lang-btn.active{background:var(--blue);color:#fff}
+@media(max-width:800px){.lang-toggle{margin-left:auto}.nav>.cta{display:none}}
 </style>
 </head>
 <body>
@@ -138,6 +143,7 @@ footer a{display:block;margin:7px 0}
       <a href="#services">Services</a>
       <a href="#about">About</a><a href="#gallery">Our Work</a>
       <a href="#contact">Contact</a>
+      <div class="lang-toggle" role="group" aria-label="Language selector"><button class="lang-btn active" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="es">ES</button></div>
       <a class="cta" href="tel:+16232700529">Call Now</a>
     </nav>
   </div>
@@ -266,5 +272,22 @@ footer a{display:block;margin:7px 0}
 
 <a class="mobile-call" href="tel:+16232700529">☎ CALL INNOVAIR — 623-270-0529</a>
 <a class="whatsapp-float" href="https://wa.me/16232700529?text=Hello%20INNOVAIR%2C%20I%20would%20like%20to%20request%20HVAC%20or%20refrigeration%20service." target="_blank" rel="noopener" aria-label="Chat with INNOVAIR on WhatsApp"><span class="whatsapp-icon">◔</span> WhatsApp</a>
+
+<script>
+(function(){
+ const es={"Services": "Servicios", "About": "Nosotros", "Our Work": "Nuestro Trabajo", "Contact": "Contacto", "Request a Quote": "Solicitar Cotización", "Professional HVAC & Refrigeration Services": "Servicios Profesionales de HVAC y Refrigeración", "Reliable comfort. Professional service.": "Confort confiable. Servicio profesional.", "Call 623-270-0529": "Llamar al 623-270-0529", "Email Us": "Envíanos un correo", "Chat on WhatsApp": "Chatear por WhatsApp", "Let's get started": "Comencemos", "Ready to request service?": "¿Listo para solicitar servicio?", "Call INNOVAIR or send an email to discuss your HVAC or refrigeration needs.": "Llame a INNOVAIR o envíenos un correo para hablar sobre sus necesidades de HVAC o refrigeración.", "Quick Links": "Enlaces Rápidos", "CALL INNOVAIR — 623-270-0529": "LLAMA A INNOVAIR — 623-270-0529"};
+ const original=new Map();
+ const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
+ let n; while(n=walker.nextNode()){ const t=n.nodeValue.trim(); if(t && es[t]) original.set(n,t); }
+ function setLang(lang){
+   original.forEach((en,node)=>{node.nodeValue=node.nodeValue.replace(node.nodeValue.trim(),lang==='es'?es[en]:en)});
+   document.documentElement.lang=lang;
+   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+   localStorage.setItem('innovair-lang',lang);
+ }
+ document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+ setLang(localStorage.getItem('innovair-lang')||'en');
+})();
+</script>
 </body>
 </html>
