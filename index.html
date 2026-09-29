@@ -125,10 +125,7 @@ footer a{display:block;margin:7px 0}
 }
 
 
-.lang-toggle{display:flex;align-items:center;gap:4px;background:#eef5fa;border:1px solid #d9e6ef;border-radius:9px;padding:3px;margin-left:auto}
-.lang-btn{border:0;background:transparent;color:var(--navy);padding:8px 10px;border-radius:7px;font-weight:900;cursor:pointer;font-size:12px}
-.lang-btn.active{background:var(--blue);color:#fff}
-@media(max-width:800px){.lang-toggle{margin-left:auto}.nav>.cta{display:none}}
+.lang-switch{display:flex;align-items:center;gap:5px;margin-left:auto}.lang-btn{border:1px solid #cbd5e1;background:#fff;color:var(--navy);padding:8px 10px;border-radius:8px;font-weight:800;cursor:pointer;font-size:12px}.lang-btn.active{background:var(--blue);color:#fff;border-color:var(--blue)}@media(max-width:800px){.nav{gap:10px}.brand{flex:1}.lang-switch{margin-left:0}.lang-btn{padding:8px 9px}}
 </style>
 </head>
 <body>
@@ -143,9 +140,12 @@ footer a{display:block;margin:7px 0}
       <a href="#services">Services</a>
       <a href="#about">About</a><a href="#gallery">Our Work</a>
       <a href="#contact">Contact</a>
-      <div class="lang-toggle" role="group" aria-label="Language selector"><button class="lang-btn active" type="button" data-lang="en">EN</button><button class="lang-btn" type="button" data-lang="es">ES</button></div>
       <a class="cta" href="tel:+16232700529">Call Now</a>
     </nav>
+    <div class="lang-switch" aria-label="Language / Idioma">
+      <button class="lang-btn active" type="button" data-lang="en" aria-label="View in English">EN</button>
+      <button class="lang-btn" type="button" data-lang="es" aria-label="Ver en español">ES</button>
+    </div>
   </div>
 </header>
 
@@ -248,6 +248,14 @@ footer a{display:block;margin:7px 0}
         <div class="kicker" style="color:#7ed9f4">Let's get started</div>
         <h2>Ready to request service?</h2>
         <p>Call INNOVAIR or send an email to discuss your HVAC or refrigeration needs.</p>
+        <form id="quote-form" style="display:grid;gap:10px;margin-top:20px" aria-label="Request a Quote">
+          <label>Name <input name="name" required autocomplete="name" style="display:block;width:100%;padding:12px;margin-top:5px;border:0;border-radius:6px"></label>
+          <label>Phone or email <input name="contact" required style="display:block;width:100%;padding:12px;margin-top:5px;border:0;border-radius:6px"></label>
+          <label>City <input name="city" autocomplete="address-level2" style="display:block;width:100%;padding:12px;margin-top:5px;border:0;border-radius:6px"></label>
+          <label>How can we help? <textarea name="details" required rows="4" style="display:block;width:100%;padding:12px;margin-top:5px;border:0;border-radius:6px"></textarea></label>
+          <button class="btn-white" type="submit">Send quote request by email</button>
+          <small>This opens your email app so you can review and send the request.</small>
+        </form>
       </div>
       <div>
         <a class="btn-white" href="tel:+16232700529">Call 623-270-0529</a>
@@ -275,18 +283,29 @@ footer a{display:block;margin:7px 0}
 
 <script>
 (function(){
- const es={"Services": "Servicios", "About": "Nosotros", "Our Work": "Nuestro Trabajo", "Contact": "Contacto", "Request a Quote": "Solicitar Cotización", "Professional HVAC & Refrigeration Services": "Servicios Profesionales de HVAC y Refrigeración", "Reliable comfort. Professional service.": "Confort confiable. Servicio profesional.", "Call 623-270-0529": "Llamar al 623-270-0529", "Email Us": "Envíanos un correo", "Chat on WhatsApp": "Chatear por WhatsApp", "Let's get started": "Comencemos", "Ready to request service?": "¿Listo para solicitar servicio?", "Call INNOVAIR or send an email to discuss your HVAC or refrigeration needs.": "Llame a INNOVAIR o envíenos un correo para hablar sobre sus necesidades de HVAC o refrigeración.", "Quick Links": "Enlaces Rápidos", "CALL INNOVAIR — 623-270-0529": "LLAMA A INNOVAIR — 623-270-0529"};
- const original=new Map();
- const walker=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);
- let n; while(n=walker.nextNode()){ const t=n.nodeValue.trim(); if(t && es[t]) original.set(n,t); }
- function setLang(lang){
-   original.forEach((en,node)=>{node.nodeValue=node.nodeValue.replace(node.nodeValue.trim(),lang==='es'?es[en]:en)});
-   document.documentElement.lang=lang;
-   document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
-   localStorage.setItem('innovair-lang',lang);
- }
- document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
- setLang(localStorage.getItem('innovair-lang')||'en');
+const es={"Services": "Servicios", "About": "Nosotros", "Our Work": "Nuestro trabajo", "Contact": "Contacto", "Call Now": "Llamar ahora", "HVAC • REFRIGERATION • SERVICE": "HVAC • REFRIGERACIÓN • SERVICIO", "Comfort. Performance. Reliability.": "Confort. Rendimiento. Confiabilidad.", "Professional HVAC & refrigeration solutions for homes and businesses. Get dependable service and a straightforward quote from INNOVAIR.": "Soluciones profesionales de HVAC y refrigeración para hogares y negocios. Obtenga un servicio confiable y una cotización clara de INNOVAIR.", "Call 623-270-0529": "Llamar al 623-270-0529", "Request a Quote": "Solicitar cotización", "Need HVAC service?": "¿Necesita servicio de HVAC?", "Tell us what you need and we’ll help you find the right solution.": "Díganos qué necesita y le ayudaremos a encontrar la solución adecuada.", "Tell us what you need and we'll help you find the right solution.": "Díganos qué necesita y le ayudaremos a encontrar la solución adecuada.", "Professional HVAC & Refrigeration": "HVAC y refrigeración profesional", "What we do": "Lo que hacemos", "HVAC & Refrigeration Services": "Servicios de HVAC y refrigeración", "A clean, professional service experience focused on keeping your equipment operating efficiently and reliably.": "Un servicio profesional enfocado en mantener sus equipos funcionando de manera eficiente y confiable.", "Air Conditioning": "Aire acondicionado", "Service, maintenance, troubleshooting and installation support for cooling systems.": "Servicio, mantenimiento, diagnóstico y apoyo de instalación para sistemas de aire acondicionado.", "Heating": "Calefacción", "Heating system service and maintenance to help keep your space comfortable.": "Servicio y mantenimiento de sistemas de calefacción para mantener su espacio confortable.", "Refrigeration": "Refrigeración", "Professional refrigeration service for commercial equipment and applications.": "Servicio profesional de refrigeración para equipos y aplicaciones comerciales.", "Our work": "Nuestro trabajo", "Real INNOVAIR Project Photos": "Fotos reales de proyectos de INNOVAIR", "A selection of real HVAC and refrigeration project photos from INNOVAIR work.": "Una selección de fotos reales de trabajos de HVAC y refrigeración realizados por INNOVAIR.", "Mini-Split Indoor Unit": "Unidad interior Mini-Split", "Mini-Split Outdoor Unit": "Unidad exterior Mini-Split", "Commercial Rooftop HVAC": "HVAC comercial en azotea", "Rooftop HVAC Equipment": "Equipo HVAC en azotea", "Commercial Rooftop Unit": "Unidad comercial en azotea", "Rooftop HVAC Service": "Servicio HVAC en azotea", "Walk-In Refrigeration": "Refrigeración Walk-In", "Refrigeration Equipment": "Equipo de refrigeración", "Project photos provided by INNOVAIR.": "Fotos de proyectos proporcionadas por INNOVAIR.", "Why INNOVAIR": "Por qué INNOVAIR", "Professional service, built around your needs.": "Servicio profesional diseñado para sus necesidades.", "We focus on clear communication, quality workmanship and practical HVAC & refrigeration solutions.": "Nos enfocamos en una comunicación clara, trabajo de calidad y soluciones prácticas de HVAC y refrigeración.", "Professional and dependable service": "Servicio profesional y confiable", "Residential & commercial solutions": "Soluciones residenciales y comerciales", "Clear communication from start to finish": "Comunicación clara de principio a fin", "Service focused on long-term performance": "Servicio enfocado en rendimiento a largo plazo", "Where we serve": "Dónde ofrecemos servicio", "Service Areas": "Áreas de servicio", "INNOVAIR HVAC & Refrigeration proudly serves customers throughout the greater Phoenix metropolitan area.": "INNOVAIR HVAC & Refrigeration ofrece orgullosamente servicio a clientes en toda el área metropolitana de Phoenix.", "Let’s get started": "Comencemos", "Let's get started": "Comencemos", "Ready to request service?": "¿Listo para solicitar servicio?", "Call INNOVAIR or send an email to discuss your HVAC or refrigeration needs.": "Llame a INNOVAIR o envíenos un correo electrónico para hablar sobre sus necesidades de HVAC o refrigeración.", "Chat on WhatsApp": "Chatear por WhatsApp", "Email Us": "Envíenos un correo", "Name": "Nombre", "Phone or email": "Teléfono o correo", "City": "Ciudad", "How can we help?": "¿Cómo podemos ayudarle?", "Send quote request by email": "Enviar solicitud por correo", "This opens your email app so you can review and send the request.": "Se abrirá su correo para revisar y enviar la solicitud.", "Quick Links": "Enlaces rápidos", "All rights reserved.": "Todos los derechos reservados.", "☎ CALL INNOVAIR — 623-270-0529": "☎ LLAMAR A INNOVAIR — 623-270-0529"};
+const nodes=[];
+function collect(root){const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;while(n=w.nextNode()){const t=n.nodeValue.trim();if(t&&es[t])nodes.push([n,n.nodeValue,t]);}}
+collect(document.body);
+function setLang(lang){
+ nodes.forEach(([n,original,key])=>{if(lang==='es'){const lead=original.match(/^\s*/)[0],tail=original.match(/\s*$/)[0];n.nodeValue=lead+es[key]+tail;}else n.nodeValue=original;});
+ document.documentElement.lang=lang;
+ document.querySelectorAll('.lang-btn').forEach(b=>b.classList.toggle('active',b.dataset.lang===lang));
+ document.title=lang==='es'?'INNOVAIR HVAC & Refrigeration | Servicios de HVAC y Refrigeración':'INNOVAIR HVAC & Refrigeration | HVAC & Refrigeration Services';
+ const meta=document.querySelector('meta[name="description"]'); if(meta) meta.content=lang==='es'?'INNOVAIR HVAC & Refrigeration — servicios profesionales de HVAC y refrigeración. Llame al 623-270-0529 para servicio o cotización.':'INNOVAIR HVAC & Refrigeration — professional HVAC and refrigeration services. Call 623-270-0529 for service or a quote.';
+ try { localStorage.setItem('innovair-language',lang); } catch (e) { /* Preferences may be unavailable in local previews. */ }
+}
+document.getElementById('quote-form').addEventListener('submit',function(event){
+ event.preventDefault();
+ const data=new FormData(this);
+ const subject='INNOVAIR quote request / Solicitud de cotización';
+ const body=['Name / Nombre: '+data.get('name'),'Phone or email / Teléfono o correo: '+data.get('contact'),'City / Ciudad: '+data.get('city'),'Details / Detalles: '+data.get('details')].join('\n');
+ window.location.href='mailto:innovairhvacaz01@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);
+});
+document.querySelectorAll('.lang-btn').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.lang)));
+let initialLang='en';
+try { initialLang=localStorage.getItem('innovair-language')||'en'; } catch (e) {}
+setLang(initialLang);
 })();
 </script>
 </body>
